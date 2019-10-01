@@ -21,12 +21,14 @@ int main(int argc, char* argv[]) {
     vector<int> leaders;
     leaders.reserve(size);
     int max = *vettore.rbegin();
+    // Search in inverse order.
     for (auto it = vettore.rbegin(); it != vettore.rend(); it++) {
       if (*it >= max) {
         max = *it;
         leaders.push_back(max);
       }
     }
+    // Now i have to read in inverse order to have leaders in correct order.
     for (int i = leaders.size() - 1; i >= 0; i--) {
       cout << leaders[i];
       if (i != 0) {
