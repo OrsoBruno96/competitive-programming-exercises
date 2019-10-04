@@ -28,7 +28,7 @@
 *** TODO Maximum path sum
 
 ** Lecture 6
-*** TODO Ilya and queries
+*** DONE Ilya and queries
 *** TODO Alice bob and chocolate
 *** TODO Number of ways
 *** TODO Little girl and maximum sum
