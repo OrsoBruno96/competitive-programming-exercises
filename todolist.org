@@ -17,7 +17,7 @@
 
 ** Lecture 3
 *** TODO Inversion count
-*** TODO Largest even number
+*** DONE Largest even number
 
 ** Lecture 4
 

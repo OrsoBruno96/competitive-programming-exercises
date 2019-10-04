@@ -7,16 +7,15 @@ int main(int argc, char* argv[]) {
   using ll = long long int;
   int TC = 0;
   cin >> TC;
-  getchar();  // flush first \n
   while (TC--) {
     // I save in an array the number of occurencies of every
     // digit.
     array<int, 10> occurrencies({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-    char c = getchar();
-    while (c != '\n') {
+    string s;
+    cin >> s;
+    for (const auto& c: s) {
       int i = ((int) c) - ((int) '0');
       occurrencies[i] += 1;
-      c = getchar();
     }
     // This will save the smallest even number.
     int smallest = -1;
