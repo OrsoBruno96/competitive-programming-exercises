@@ -10,8 +10,15 @@ int main(int argc, char* argv[]) {
   while (TC--) {
     int N = 0, K = 0;
     cin >> N >> K;
+    // max_q is a double-ended queue of indexes. It is sorted
+    // in a way such that the front is always the maximum index.
+    // I keep only the necessary indexes of the last K values.
+    // If I encounter a new value, bigger than its predecessor, I can safely
+    // discard that predecessor, and so on until the end of the queue.
     deque<int> max_q;
     vector<int> all_values;
+    // I save the max_list values in a vector because outputting
+    // on every iteration is really time consuming.
     vector<int> max_list;
     all_values.reserve(N);
     max_list.reserve(N - K + 1);
