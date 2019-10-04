@@ -11,10 +11,17 @@ int main(int argc, char* argv[]) {
   while (TC--) {
     int N = 0;
     cin >> N;
+    // For this problem we only need a stack.
+    // The stack will be ordered, the base of the stack will be
+    // the greatest element. We put an element on the stack
+    // and every time we find something greater we add it to
+    // the greaters vector and remove from the stack the smallest element.
     stack<int> tbf;  // to be found (the next one)
     vector<ll> all_values;
     vector<ll> greaters(N, 0);
     all_values.reserve(N);
+    // Every operation inside this loop has constant time.
+    // Overall complexity of algorithm is linear.
     for (int i = 0; i < N; i++) {
       ll appo = 0;
       cin >> appo;
