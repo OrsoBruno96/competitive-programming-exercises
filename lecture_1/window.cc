@@ -12,7 +12,9 @@ int main(int argc, char* argv[]) {
     cin >> N >> K;
     deque<int> max_q;
     vector<int> all_values;
-    all_values.reserve(K);
+    vector<int> max_list;
+    all_values.reserve(N);
+    max_list.reserve(N - K + 1);
     for (auto i = 0; i < N; i++) {
       int appo;
       cin >> appo;
@@ -24,10 +26,12 @@ int main(int argc, char* argv[]) {
         max_q.pop_front();
       }
       max_q.push_front(i);
-
       if (i > K - 2) {
-        cout << all_values[max_q.back()] << " ";
+        max_list.push_back(all_values[max_q.back()]);
       }
+    }
+    for (const auto& it: max_list) {
+      cout << it << " ";
     }
     cout << "\n";
   }
