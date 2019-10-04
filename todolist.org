@@ -31,7 +31,7 @@
 *** DONE Ilya and queries
 *** DONE Alice bob and chocolate
 *** TODO Number of ways
-*** TODO Little girl and maximum sum
+*** DONE Little girl and maximum sum
 
 ** Lecture 7
 *** TODO Update the array
