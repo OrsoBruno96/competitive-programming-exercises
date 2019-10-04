@@ -29,7 +29,7 @@
 
 ** Lecture 6
 *** DONE Ilya and queries
-*** TODO Alice bob and chocolate
+*** DONE Alice bob and chocolate
 *** TODO Number of ways
 *** TODO Little girl and maximum sum
 
