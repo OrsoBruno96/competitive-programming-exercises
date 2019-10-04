@@ -1,0 +1,37 @@
+# -*- mode: org -*-
+#+STARTUP: showall
+
+* Problemi da fare
+
+** Lecture 1
+*** DONE leaders
+*** DONE kadane
+*** DONE missing
+*** DONE water
+*** DONE window
+
+** Lecture 2
+*** DONE Next larger element
+*** DONE Towers
+*** TODO Finding team members
+
+** Lecture 3
+*** TODO Inversion count
+*** TODO Largest even number
+
+** Lecture 4
+
+** Lecture 5
+*** TODO Firing employees
+*** TODO Check for BST
+*** TODO Preorder traversal and BST
+*** TODO Maximum path sum
+
+** Lecture 6
+*** TODO Ilya and queries
+*** TODO Alice bob and chocolate
+*** TODO Number of ways
+*** TODO Little girl and maximum sum
+
+** Lecture 7
+*** TODO Update the array
