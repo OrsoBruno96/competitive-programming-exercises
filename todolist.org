@@ -25,7 +25,7 @@
 *** TODO Firing employees
 *** DONE Check for BST
 *** TODO Preorder traversal and BST
-*** TODO Maximum path sum
+*** DONE Maximum path sum
 
 ** Lecture 6
 *** DONE Ilya and queries
