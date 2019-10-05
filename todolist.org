@@ -30,7 +30,7 @@
 ** Lecture 6
 *** DONE Ilya and queries
 *** DONE Alice bob and chocolate
-*** TODO Number of ways
+*** DONE Number of ways
 *** DONE Little girl and maximum sum
 
 ** Lecture 7
