@@ -16,6 +16,9 @@ class Team {
 
 
 int main(int argc, char* argv[]) {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
   int N = 0;
   cin >> N;
   const int nteams = N;
