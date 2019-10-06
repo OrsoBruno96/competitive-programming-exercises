@@ -13,7 +13,7 @@
 ** Lecture 2
 *** DONE Next larger element
 *** DONE Towers
-*** TODO Finding team members
+*** DONE Finding team members
 
 ** Lecture 3
 *** TODO Inversion count
