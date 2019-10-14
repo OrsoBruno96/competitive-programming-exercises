@@ -22,7 +22,7 @@
 ** Lecture 4
 
 ** Lecture 5
-*** TODO Firing employees
+*** DONE Firing employees
 *** DONE Check for BST
 *** TODO Preorder traversal and BST
 *** DONE Maximum path sum
