@@ -34,4 +34,8 @@
 *** DONE Little girl and maximum sum
 
 ** Lecture 7
-*** TODO Update the array
+*** DONE Update the array
+
+** Lecture 8
+*** TODO Nested segments
+*** TODO Pashmak and Parmidas
