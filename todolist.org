@@ -37,5 +37,5 @@
 *** DONE Update the array
 
 ** Lecture 8
-*** TODO Nested segments
+*** DONE Nested segments
 *** TODO Pashmak and Parmidas
