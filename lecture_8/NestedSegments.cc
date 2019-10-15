@@ -10,6 +10,10 @@ using vpii = vector<pii>;
 using vpiii = vector<piii>;
 
 int main(int argc, char* argv[]) {
+  std::ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+
   int N = 0;
   cin >> N;
 
