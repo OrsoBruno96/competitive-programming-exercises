@@ -38,4 +38,4 @@
 
 ** Lecture 8
 *** DONE Nested segments
-*** TODO Pashmak and Parmidas
+*** DONE Pashmak and Parmidas
