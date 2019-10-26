@@ -4,16 +4,53 @@
 #define __SEGMENT_TREE_H__
 #include <vector>
 #include <utility>
+#include <type_traits>
 
 
-template<typename T> class SegmentTree {
+template<typename T> class SegmentType {
  public:
-  SegmentTree(int size);
-  void add(int pos, const T& value);
-  T range_query(int pos1, int pos2) const;
+  static T base();
+  static T combine(const T& left, const T& right);
+};
 
-  template<typename U>
-  friend std::ostream& print_all(std::ostream& os, const SegmentTree<U>& st);
+
+template<typename T> class SegmentTypeAdd : public SegmentType<T> {
+ public:
+  static T base() { return 0; }
+  static T combine(const T& left, const T& right) { return left + right; }
+};
+
+template<typename T> class SegmentTypeMax : public SegmentType<T> {
+ public:
+  static T base() { return INT_MIN; }
+  static T combine(const T& left, const T& right) {
+    return std::max(left, right);
+  }
+};
+
+template<typename T> class SegmentTypeMin : public SegmentType<T> {
+ public:
+  static T base() { return INT_MAX; }
+  static T combine(const T& left, const T& right) {
+    return std::min(left, right);
+  }
+};
+
+
+template<typename T, class TT>
+class SegmentTree {
+ public:
+  explicit SegmentTree(int size);
+
+  typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, void>::type
+  add(int pos, const T& value);
+
+  typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
+  range_query(int pos1, int pos2) const;
+
+  template<typename U, typename V> friend
+  std::ostream& print_all(std::ostream& os, const SegmentTree<U, V>& st);
+
 
  private:
   std::pair<int, int> range(int tree_pos_) const;
@@ -22,12 +59,11 @@ template<typename T> class SegmentTree {
   int size_;
   int tree_size_;
   std::vector<T> tree_;
-
 };
 
 
-template<typename T>
-std::ostream& print_all(std::ostream& os, const SegmentTree<T>& st) {
+template<typename T, class TT>
+std::ostream& print_all(std::ostream& os, const SegmentTree<T, TT>& st) {
   for (const auto it: st.tree_) {
     os << it << "\t";
   }
@@ -43,8 +79,8 @@ inline int MSB(int a) {
   return 1 << counter;
 }
 
-template<typename T>
-std::pair<int, int> SegmentTree<T>::range(int tree_pos_) const {
+template<typename T, class TT>
+std::pair<int, int> SegmentTree<T, TT>::range(int tree_pos_) const {
   const auto msb = MSB(tree_pos_);
   const auto size = tree_size_/msb/2;
   // std::cout << "tree pos: " << tree_pos_ << " msb " << msb <<
@@ -56,25 +92,32 @@ std::pair<int, int> SegmentTree<T>::range(int tree_pos_) const {
 }
 
 
-template<typename T> SegmentTree<T>::SegmentTree(int size) :
+template<typename T, class TT>
+SegmentTree<T, TT>::SegmentTree(int size) :
    size_(size), tree_size_(2*MSB(size)), tree_(size + tree_size_) {}
 
 
-
-template<typename T> void SegmentTree<T>::add(int pos, const T& value) {
+template<typename T, class TT>
+typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, void>::type
+SegmentTree<T, TT>::add(int pos, const T& value) {
   pos += (tree_size_ / 2) - 1;
+  tree_[pos] += value;
+  pos /= 2;
   do {
-    // std::cout << "update pos: " << pos << std::endl;
-    tree_[pos] += value;
+    int p1, p2;
+    p1 = pos*2;
+    p2 = p1 + 1;
+    // std::cout << "update pos: " << p1 << " with: " << p2 << std::endl;
+    tree_[pos] = TT::combine(tree_[p1], tree_[p2]);
     pos /= 2;
   } while (pos > 0);
 }
 
 
-template<typename T>
-T SegmentTree<T>::recursive_range_query(int start, int pos1, int pos2) const {
+template<typename T, class TT>
+T SegmentTree<T, TT>::recursive_range_query(int start, int pos1, int pos2) const {
   if (start > tree_size_) {
-    return 0;
+    return TT::base();
   }
 
   const auto attuale = range(start);
@@ -84,13 +127,15 @@ T SegmentTree<T>::recursive_range_query(int start, int pos1, int pos2) const {
     return tree_[start];
   }
   if (attuale.first > pos1 && attuale.second < pos2) {
-    return 0;
+    return TT::base();
   }
-  return recursive_range_query(start*2, pos1, pos2) +
-    recursive_range_query(start*2 + 1, pos1, pos2);
+  return TT::combine(recursive_range_query(start*2, pos1, pos2),
+                    recursive_range_query(start*2 + 1, pos1, pos2));
 }
 
-template<typename T> T SegmentTree<T>::range_query(int pos1, int pos2) const {
+template<typename T, class TT>
+typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
+SegmentTree<T, TT>::range_query(int pos1, int pos2) const {
   return recursive_range_query(1, pos1, pos2);
 }
 
