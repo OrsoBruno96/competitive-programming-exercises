@@ -95,7 +95,17 @@ std::pair<int, int> SegmentTree<T, TT>::range(int tree_pos_) const {
 
 template<typename T, class TT>
 SegmentTree<T, TT>::SegmentTree(int size) :
-  size_(size), tree_size_(2*MSB(size)), tree_(tree_size_) {}
+  size_(size) {
+  auto const ss = MSB(size);
+  int ssize = 0;
+  if (ss == size) {
+    ssize = 2*size;
+  } else {
+    ssize = 4*ss;
+  }
+  tree_size_ = ssize;
+  tree_ = std::vector<T>(tree_size_);
+}
 
 
 template<typename T, class TT>

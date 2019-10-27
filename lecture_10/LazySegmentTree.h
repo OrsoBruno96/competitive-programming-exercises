@@ -115,8 +115,7 @@ LazySegmentTree<T, TT>::range_add(int pos1, int pos2, const T& value) {
 
 template<typename T, class TT>
 void LazySegmentTree<T, TT>::apply_to_children(int start) {
-  std::cout << "start: " << start << std::endl;
-  if (start > this->tree_size_) {
+  if (start >= this->tree_size_) {
     return;
   }
   if (lazy_tree_[start]) {
@@ -146,7 +145,17 @@ void LazySegmentTree<T, TT>::recursive_range_add(int start, int pos1, int pos2, 
   const auto attuale = this->range(start);
   if (attuale.first >= pos1 && attuale.second <= pos2) {
     const auto value_to_add = TT::value_to_add(start, value, this);
-    lazy_tree_[start] = value_to_add;
+    this->tree_[start] += value_to_add;
+    if (start*2 < this->tree_size_) {
+      lazy_tree_[start*2] = TT::elaborate_lazy_children(value_to_add);
+      lazy_tree_[start*2 + 1] = TT::elaborate_lazy_children(value_to_add);
+    }
+    auto parent = start/2;
+    while (parent) {
+      const auto other = (start % 2) ? start - 1 : start + 1;
+      this->tree_[parent] = TT::combine(this->tree_[start], this->tree_[other]);
+      parent /= 2;
+    }
     return;
   }
   if (attuale.first > pos1 && attuale.second < pos2) {

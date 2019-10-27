@@ -8,7 +8,8 @@ using namespace std;
 int main(int argc, char* argv[]) {
   int n = 0;
   cin >> n;
-  LazySegmentTree<int, LazySegmentTypeMin<int>> tree(n);
+  using ll = long long int;
+  LazySegmentTree<ll, LazySegmentTypeMin<ll>> tree(n);
 
   for (auto i = 0; i < n; i++) {
     int appo;
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
   cin >> q;
   vector<int> ans;
   ans.reserve(q);
+  // int cusumano = 0;
   for (int i = 0; i < q + 1; i++) {
     int a = 0, b = 0, c = 0;
     string appo;
@@ -38,6 +40,8 @@ int main(int argc, char* argv[]) {
       }
     } else {
       a++; b++;
+      // cout << cusumano << endl;
+      // cusumano++;
       if (b >= a) {
         ans.push_back(tree.range_query(a, b));
       } else {
