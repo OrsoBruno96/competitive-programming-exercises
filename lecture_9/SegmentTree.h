@@ -45,16 +45,17 @@ class SegmentTree {
   typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, void>::type
   add(int pos, const T& value);
 
-  typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
-  range_query(int pos1, int pos2) const;
+  virtual typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
+  range_query(int pos1, int pos2);
 
   template<typename U, typename V> friend
   std::ostream& print_all(std::ostream& os, const SegmentTree<U, V>& st);
 
+  int get_tree_size() const { return tree_size_; }
 
- private:
+ protected:
   std::pair<int, int> range(int tree_pos_) const;
-  T recursive_range_query(int start, int pos1, int pos2) const;
+  virtual T recursive_range_query(int start, int pos1, int pos2);
 
   int size_;
   int tree_size_;
@@ -94,7 +95,7 @@ std::pair<int, int> SegmentTree<T, TT>::range(int tree_pos_) const {
 
 template<typename T, class TT>
 SegmentTree<T, TT>::SegmentTree(int size) :
-   size_(size), tree_size_(2*MSB(size)), tree_(size + tree_size_) {}
+  size_(size), tree_size_(2*MSB(size)), tree_(tree_size_) {}
 
 
 template<typename T, class TT>
@@ -115,7 +116,7 @@ SegmentTree<T, TT>::add(int pos, const T& value) {
 
 
 template<typename T, class TT>
-T SegmentTree<T, TT>::recursive_range_query(int start, int pos1, int pos2) const {
+T SegmentTree<T, TT>::recursive_range_query(int start, int pos1, int pos2) {
   if (start > tree_size_) {
     return TT::base();
   }
@@ -135,7 +136,7 @@ T SegmentTree<T, TT>::recursive_range_query(int start, int pos1, int pos2) const
 
 template<typename T, class TT>
 typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
-SegmentTree<T, TT>::range_query(int pos1, int pos2) const {
+SegmentTree<T, TT>::range_query(int pos1, int pos2) {
   return recursive_range_query(1, pos1, pos2);
 }
 

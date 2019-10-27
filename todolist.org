@@ -39,3 +39,9 @@
 ** Lecture 8
 *** DONE Nested segments
 *** DONE Pashmak and Parmidas
+
+** Lecture 9
+*** TODO Segment tree nested segments
+
+** Lecture 10
+*** TODO Circular RMQ
