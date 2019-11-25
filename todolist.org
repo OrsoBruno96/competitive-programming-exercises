@@ -45,3 +45,26 @@
 
 ** Lecture 10
 *** TODO Circular RMQ
+
+** Lecture 11
+
+** Lecture 12
+*** TODO Powerful array
+*** TODO Tree and queries
+
+** Lecture 13
+** Lecture 14
+*** TODO Longest common subsequence
+*** TODO 0-1 knapsack
+
+** Lecture 15
+*** TODO Subset sum
+*** TODO Minimum number of jumps
+*** TODO Edit distance
+** Lecture 16
+*** TODO Longest increasing subsequence
+*** TODO Longest bitonic subsequence
+
+** Lecture 17
+*** TODO Vertex cover
+*** TODO Longest palindromic subsequence
