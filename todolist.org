@@ -55,7 +55,7 @@
 ** Lecture 13
 ** Lecture 14
 *** TODO Longest common subsequence
-*** TODO 0-1 knapsack
+*** DONE 0-1 knapsack
 
 ** Lecture 15
 *** TODO Subset sum
