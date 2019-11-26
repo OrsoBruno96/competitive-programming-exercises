@@ -62,7 +62,7 @@
 *** DONE Minimum number of jumps
 *** TODO Edit distance
 ** Lecture 16
-*** TODO Longest increasing subsequence
+*** DONE Longest increasing subsequence
 *** TODO Longest bitonic subsequence
 
 ** Lecture 17
