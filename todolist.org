@@ -59,7 +59,7 @@
 
 ** Lecture 15
 *** TODO Subset sum
-*** TODO Minimum number of jumps
+*** DONE Minimum number of jumps
 *** TODO Edit distance
 ** Lecture 16
 *** TODO Longest increasing subsequence
