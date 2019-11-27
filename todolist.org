@@ -68,4 +68,4 @@
 
 ** Lecture 17
 *** TODO Vertex cover
-*** TODO Longest palindromic subsequence
+*** DONE Longest palindromic subsequence
