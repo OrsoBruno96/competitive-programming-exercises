@@ -16,7 +16,7 @@
 *** DONE Finding team members
 
 ** Lecture 3
-*** TODO Inversion count
+*** DONE Inversion count
 *** DONE Largest even number
 
 ** Lecture 4
