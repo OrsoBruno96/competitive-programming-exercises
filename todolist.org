@@ -63,7 +63,7 @@
 *** TODO Edit distance
 ** Lecture 16
 *** DONE Longest increasing subsequence
-*** TODO Longest bitonic subsequence
+*** DONE Longest bitonic subsequence
 
 ** Lecture 17
 *** TODO Vertex cover
