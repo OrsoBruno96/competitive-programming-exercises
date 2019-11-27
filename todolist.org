@@ -58,7 +58,7 @@
 *** DONE 0-1 knapsack
 
 ** Lecture 15
-*** TODO Subset sum
+*** DONE Subset sum
 *** DONE Minimum number of jumps
 *** DONE Edit distance
 
