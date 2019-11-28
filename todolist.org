@@ -49,7 +49,7 @@
 ** Lecture 11
 
 ** Lecture 12
-*** TODO Powerful array
+*** DONE Powerful array
 *** TODO Tree and queries
 
 ** Lecture 13
