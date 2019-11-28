@@ -67,5 +67,5 @@
 *** DONE Longest bitonic subsequence
 
 ** Lecture 17
-*** TODO Vertex cover
+*** DONE Vertex cover
 *** DONE Longest palindromic subsequence
