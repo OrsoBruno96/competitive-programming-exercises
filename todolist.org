@@ -69,3 +69,26 @@
 ** Lecture 17
 *** DONE Vertex cover
 *** DONE Longest palindromic subsequence
+
+** Lecture 18
+*** TODO N meetings in one room
+*** TODO Magic numbers
+*** TODO Wilbur and array
+*** TODO Alternative thinking
+
+** Lecture 19
+*** TODO Lexicographically maximum subsequence
+*** TODO Woodcutters
+*** TODO Queue
+
+** Lecture 20
+*** TODO X total shapes
+*** TODO IsBipartite
+*** TODO Fox and names
+
+** Lecture 21
+*** TODO Learning languages
+*** TODO Checkposts
+
+** Lecture 22
+*** TODO Minimum spanning tree
