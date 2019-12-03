@@ -77,7 +77,7 @@
 *** DONE Alternative thinking
 
 ** Lecture 19
-*** TODO Lexicographically maximum subsequence
+*** DONE Lexicographically maximum subsequence
 *** TODO Woodcutters
 *** TODO Queue
 
