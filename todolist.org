@@ -71,9 +71,9 @@
 *** DONE Longest palindromic subsequence
 
 ** Lecture 18
-*** TODO N meetings in one room
-*** TODO Magic numbers
-*** TODO Wilbur and array
+*** DONE N meetings in one room
+*** DONE Magic numbers
+*** DONE Wilbur and array
 *** TODO Alternative thinking
 
 ** Lecture 19
