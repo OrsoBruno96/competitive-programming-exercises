@@ -84,7 +84,7 @@
 ** Lecture 20
 *** DONE X total shapes
 *** DONE IsBipartite
-*** TODO Fox and names WA 12
+*** DONE Fox and names
 
 ** Lecture 21
 *** DONE Learning languages
