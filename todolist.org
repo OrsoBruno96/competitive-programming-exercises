@@ -63,7 +63,7 @@
 *** DONE Edit distance
 
 ** Lecture 16
-*** DONE Longest increasing subsequence
+*** DONE Longest increasing subsequence MIGLIORABILE in O(n log n)
 *** DONE Longest bitonic subsequence
 
 ** Lecture 17
@@ -79,15 +79,15 @@
 ** Lecture 19
 *** DONE Lexicographically maximum subsequence
 *** DONE Woodcutters
-*** TODO Queue
+*** TODO Queue QUASI off by one palese
 
 ** Lecture 20
 *** DONE X total shapes
 *** DONE IsBipartite
-*** TODO Fox and names
+*** TODO Fox and names WA 12
 
 ** Lecture 21
-*** TODO Learning languages
+*** DONE Learning languages
 *** TODO Checkposts
 
 ** Lecture 22
