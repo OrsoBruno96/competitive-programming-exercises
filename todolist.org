@@ -78,7 +78,7 @@
 
 ** Lecture 19
 *** DONE Lexicographically maximum subsequence
-*** TODO Woodcutters
+*** DONE Woodcutters
 *** TODO Queue
 
 ** Lecture 20
