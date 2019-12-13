@@ -88,7 +88,7 @@
 
 ** Lecture 21
 *** DONE Learning languages
-*** TODO Checkposts
+*** TODO Checkposts TLE
 
 ** Lecture 22
 *** TODO Minimum spanning tree
