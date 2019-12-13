@@ -20,7 +20,6 @@
 *** DONE Largest even number
 
 ** Lecture 4
-
 ** Lecture 5
 *** DONE Firing employees
 *** DONE Check for BST
@@ -47,7 +46,6 @@
 *** TODO Circular RMQ
 
 ** Lecture 11
-
 ** Lecture 12
 *** DONE Powerful array
 *** TODO Tree and queries
@@ -88,7 +86,7 @@
 
 ** Lecture 21
 *** DONE Learning languages
-*** TODO Checkposts TLE
+*** TODO Checkposts WA test 71
 
 ** Lecture 22
 *** TODO Minimum spanning tree

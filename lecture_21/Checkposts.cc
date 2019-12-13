@@ -6,6 +6,27 @@ using namespace std;
 using vi = vector<int>;
 using ll = long long int;
 
+
+
+// The problem statement can be casted in the "finding
+// the strongly connected components of a directed graph" in a simple way.
+// For each component we can choose  any of the nodes and all the component will
+// be protected. If we want to get the minimum cost, we can simply choose
+// greedily the minimum in each component. If there exist more
+// than one minima, we simply count the multiplicity.
+
+// The algorithm to find the strongly connected components is the following.
+// First I run a DFS on the graph, storing the end time of the visit
+// for each node. Then I run a DFS on the transpose of the graph,
+// but starting with the vertexes ordered decreasingly in end time order.
+// In this way, I am visiting each component in reverse topological sort,
+// and this means that every time I change component I actually just visited
+// exactly a strongly connected one.
+
+// Time complexity: O(V log V + E) // I need to sort the vertexes
+// Space complexity: O(V + E)
+
+
 void end_dfs(const int& i, vector<bool>& visited,
              const vector<vi>& adj_list, unsigned long& counter, vi& end_time) {
   if (visited[i]) {
@@ -41,22 +62,14 @@ void find_strongly_connected(vector<vi>& scc, const vector<vi>& adj_list) {
   const auto size = adj_list.size();
   vector<int> end_time(size, 0);
 
-  // cout << "adj list" << endl;
-  // for (const auto it: adj_list) {
-  //   for (const auto jt: it) {
-  //     cout << jt << " ";
-  //   }
-  //   cout << endl;
-  // }
-
   {  // first dfs
+    int first = 0;
     unsigned long int counter = 0;
     vector<bool> visited(size, false);
     while (counter < size) {
-      auto first = std::distance(visited.begin(),
-                                 std::find(visited.begin(),
-                                           visited.end(), false));
-      // cout << "first: " << first << endl;
+      while (first < (int) size && visited[first]) {
+        first++;
+      }
       end_dfs(first, visited, adj_list, counter, end_time);
     }
   }
@@ -73,11 +86,6 @@ void find_strongly_connected(vector<vi>& scc, const vector<vi>& adj_list) {
         transposed[it].push_back(i);
       }
     }
-    for (auto& it: transposed) {
-      sort(it.begin(), it.end(), [&](const auto& l, const auto& r) {
-                                   return end_time[l] > end_time[r];
-                                 });
-    }
     sort(order.begin(), order.end(), [&]( const auto& l, const auto& r) {
                                        return end_time[l] > end_time[r];
                                      });
@@ -93,7 +101,6 @@ void find_strongly_connected(vector<vi>& scc, const vector<vi>& adj_list) {
         scanner++;
       }
       int first = right_order[scanner];
-      // cout << "Scanner: " << scanner << " First: " << first << endl;
       vi conn_component;
       sorted_dfs(first, visited, transposed, counter, conn_component);
       scc.push_back(conn_component);  // Fare con move syntax
@@ -127,7 +134,6 @@ int main() {
   find_strongly_connected(scc, adj_list);
   ll total_minimum = 0;
   ll ways = 1;
-  // cout << "Quante scc: " << scc.size() << endl;
   for (const auto& it: scc) {
     int min = INT_MAX;
     std::multimap<int, int> values;
