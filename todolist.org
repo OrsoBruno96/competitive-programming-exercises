@@ -89,4 +89,4 @@
 *** TODO Checkposts WA test 71
 
 ** Lecture 22
-*** TODO Minimum spanning tree
+*** DONE Minimum spanning tree
