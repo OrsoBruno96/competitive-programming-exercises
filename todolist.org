@@ -86,7 +86,7 @@
 
 ** Lecture 21
 *** DONE Learning languages
-*** TODO Checkposts WA test 71
+*** DONE Checkposts
 
 ** Lecture 22
 *** DONE Minimum spanning tree

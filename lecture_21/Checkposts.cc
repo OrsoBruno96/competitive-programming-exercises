@@ -23,7 +23,7 @@ using ll = long long int;
 // and this means that every time I change component I actually just visited
 // exactly a strongly connected one.
 
-// Time complexity: O(V log V + E) // I need to sort the vertexes
+// Time complexity: O(V + E)
 // Space complexity: O(V + E)
 
 
@@ -76,23 +76,17 @@ void find_strongly_connected(vector<vi>& scc, const vector<vi>& adj_list) {
 
   {  // Reversed sorted dfs
     vector<vi> transposed(size, vi());
-    vi order(size, 0);
     vi right_order(size, 0);
-    for (unsigned long int i = 0; i < size; i++) {
-      order[i] = i;
-    }
     for (unsigned long int i = 0; i < size; i++) {
       for (const auto& it: adj_list[i]) {
         transposed[it].push_back(i);
       }
     }
-    sort(order.begin(), order.end(), [&]( const auto& l, const auto& r) {
-                                       return end_time[l] > end_time[r];
-                                     });
-    for (int i = 0; i < (int) size; i++) {
-      right_order[order[i]] = i;
-    }
 
+
+    for (int i = 0; i < (int) size; i++) {
+      right_order[size - end_time[i] - 1] = i;
+    }
     unsigned long int counter = 0;
     vector<bool> visited(size, false);
     int scanner = 0;
