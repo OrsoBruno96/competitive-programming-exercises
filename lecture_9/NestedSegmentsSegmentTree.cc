@@ -1,6 +1,6 @@
 
 #include <bits/stdc++.h>
-#include "SegmentTree2.h"
+#include "SegmentTree.h"
 
 using namespace std;
 
