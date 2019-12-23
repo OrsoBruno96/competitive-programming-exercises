@@ -77,7 +77,7 @@
 ** Lecture 19
 *** DONE Lexicographically maximum subsequence
 *** DONE Woodcutters
-*** TODO Queue QUASI off by one palese
+*** DONE Queue
 
 ** Lecture 20
 *** DONE X total shapes
