@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
        [](const auto& left, const auto& right) {
          return left.second.second < right.second.second;
        });
-  SegmentTree ft(N);
+  SegmentTree<int> ft(N);
   vector<int> contents(N, 0);
   // for (const auto& it: segments) {
   //   cout << it.second.first << " " << it.second.second << "\n";

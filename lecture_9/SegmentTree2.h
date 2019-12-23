@@ -3,8 +3,10 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
 
+
+
+template<typename T>
 class SegmentTree {
  public:
   explicit SegmentTree(const int N) : _original_size(N) {
@@ -12,22 +14,22 @@ class SegmentTree {
     _tree_size = (msb == N) ? 2*msb : 4*msb;
     _segment_tree.assign(_tree_size, 0);
   }
-  explicit SegmentTree(const std::vector<int>& v);
+  explicit SegmentTree(const std::vector<T>& v);
 
-  int range_query(const int i, const int j) const {
+  T range_query(const int i, const int j) const {
     return recursive_range_query(1, i, j, 0, _original_size - 1);
   }
-  void add(int pos, int value) {
+  void add(const int pos, const T& value) {
     return recursive_add(1, pos, value, 0, _original_size - 1);
   }
-  int operator[](int i) const;
+  T operator[](int i) const;
 
 
   void print_all() {
     for (auto it: _segment_tree) {
-      cout << it << " ";
+      std::cout << it << " ";
     }
-    cout << endl;
+    std::cout << std::endl;
   }
 
  private:
@@ -47,7 +49,7 @@ class SegmentTree {
     return (p << 1) + 1;
   }
 
-  int recursive_range_query(const int pos, const int i, const int j,
+  T recursive_range_query(const int pos, const int i, const int j,
                             const int L, const int R) const {
     if (i > R || j < L) {
       return 0;
@@ -55,12 +57,12 @@ class SegmentTree {
     if (L >= i && R <= j) {
       return _segment_tree[pos];
     }
-    int l = recursive_range_query(left(pos), i, j, L, (L + R)/2);
-    int r = recursive_range_query(right(pos), i, j, (L + R)/2 + 1, R);
+    T l = recursive_range_query(left(pos), i, j, L, (L + R)/2);
+    T r = recursive_range_query(right(pos), i, j, (L + R)/2 + 1, R);
     return l + r;
   }
 
-  void recursive_add(int pos, int range, int value, int L, int R) {
+  void recursive_add(int pos, int range, const T& value, int L, int R) {
     if (L == range && R == range) {
       _segment_tree[pos] += value;
       return;
@@ -75,7 +77,7 @@ class SegmentTree {
   }
 
 
-  std::vector<int> _segment_tree;
+  std::vector<T> _segment_tree;
   int _original_size;
   int _tree_size;
 };
