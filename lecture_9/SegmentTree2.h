@@ -1,12 +1,47 @@
 
 
+#ifndef __SEGMENT_TREE_H__
+#define __SEGMENT_TREE_H__
+
+
 #include <vector>
 #include <iostream>
 
 
 
 
-template<typename T>
+template<typename T> class SegmentType {
+ public:
+  static T base();
+  static T combine(const T& left, const T& right);
+};
+
+
+template<typename T> class SegmentTypeAdd : public SegmentType<T> {
+ public:
+  static T base() { return 0; }
+  static T combine(const T& left, const T& right) { return left + right; }
+};
+
+template<typename T> class SegmentTypeMax : public SegmentType<T> {
+ public:
+  static T base() { return INT_MIN; }
+  static T combine(const T& left, const T& right) {
+    return std::max(left, right);
+  }
+};
+
+template<typename T> class SegmentTypeMin : public SegmentType<T> {
+ public:
+  static T base() { return INT_MAX; }
+  static T combine(const T& left, const T& right) {
+    return std::min(left, right);
+  }
+};
+
+
+
+template<typename T, class TT=SegmentTypeAdd<T>>
 class SegmentTree {
  public:
   explicit SegmentTree(const int N) : _original_size(N) {
@@ -16,10 +51,13 @@ class SegmentTree {
   }
   explicit SegmentTree(const std::vector<T>& v);
 
-  T range_query(const int i, const int j) const {
+  typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, T>::type
+  range_query(const int i, const int j) const {
     return recursive_range_query(1, i, j, 0, _original_size - 1);
   }
-  void add(const int pos, const T& value) {
+
+  typename std::enable_if<std::is_base_of<SegmentType<T>, TT>::value, void>::type
+  add(const int pos, const T& value) {
     return recursive_add(1, pos, value, 0, _original_size - 1);
   }
   T operator[](int i) const;
@@ -52,14 +90,14 @@ class SegmentTree {
   T recursive_range_query(const int pos, const int i, const int j,
                             const int L, const int R) const {
     if (i > R || j < L) {
-      return 0;
+      return TT::base();
     }
     if (L >= i && R <= j) {
       return _segment_tree[pos];
     }
     T l = recursive_range_query(left(pos), i, j, L, (L + R)/2);
     T r = recursive_range_query(right(pos), i, j, (L + R)/2 + 1, R);
-    return l + r;
+    return TT::combine(l, r);
   }
 
   void recursive_add(int pos, int range, const T& value, int L, int R) {
@@ -73,7 +111,8 @@ class SegmentTree {
     } else {
       recursive_add(left(pos), range, value, L, (L + R)/2);
     }
-    _segment_tree[pos] = _segment_tree[right(pos)] + _segment_tree[left(pos)];
+    _segment_tree[pos] = TT::combine(_segment_tree[right(pos)],
+                                     _segment_tree[left(pos)]);
   }
 
 
@@ -81,3 +120,7 @@ class SegmentTree {
   int _original_size;
   int _tree_size;
 };
+
+
+
+#endif  // __SEGMENT_TREE_H__
