@@ -43,7 +43,7 @@
 *** DONE Segment tree nested segments
 
 ** Lecture 10
-*** TODO Circular RMQ
+*** DONE Circular RMQ
 
 ** Lecture 11
 ** Lecture 12

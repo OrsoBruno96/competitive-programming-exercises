@@ -2,209 +2,115 @@
 
 #ifndef __LAZY_SEGMENT_TREE_H__
 #define __LAZY_SEGMENT_TREE_H__
+
+
 #include <vector>
-#include <utility>
-#include <type_traits>
 
-#include "SegmentTree.h"
 
-// Forward decl
-template<typename T, class TT>
-class LazySegmentTree;
-
-template<typename T> class LazySegmentType : public SegmentType<T> {
+template<typename T>
+class LazySegmentTree {
  public:
-  static T elaborate_lazy_children(T val);
-  static T value_to_add(int start, const T& value,
-                        const LazySegmentTree<T, LazySegmentType<T>>* seg);
-  static T combine_lazy(const T& prec, const T& update);
-};
-
-template<typename T> class LazySegmentTypeAdd : public LazySegmentType<T>,
-                                                public SegmentTypeAdd<T> {
- public:
-  static T base() { return SegmentTypeAdd<T>::base(); }
-  static T combine(const T& left, const T& right) {
-    return SegmentTypeAdd<T>::combine(left, right);
+  // Build the segment tree given 0-indexed initial
+  LazySegmentTree(const std::vector<T>& initial) {
+    _size = initial.size();
+    _segment_tree.assign(initial.size() * 4, 0);
+    lazy.assign(initial.size() * 4, 0);
+    build(0, 0, _size - 1, initial);
   }
-  static T elaborate_lazy_children(T val) { return val/2; }
-  static T value_to_add(int start, const T& value,
-                        const LazySegmentTree<T, LazySegmentTypeAdd<T>>* seg) {
-    const auto msb = MSB(start);
-    const auto size = seg->get_tree_size()/msb/2;
-    return (size == 0) ? value : value*size;
+
+
+  // Adds value v to all elements in range [i, j]
+  T range_add(int i, int j, T v) {
+    return recursive_range_add(0, 0, _size - 1, i, j, v);
   }
-  static T combine_lazy(const T& prec, const T& update) {
-    return prec + update;
+
+  // range minimum query in range [i, j]
+  T range_query(int i, int j) {
+    return recursive_range_query(0, 0, _size - 1, i, j);
   }
-};
-
-template<typename T> class LazySegmentTypeMin : public LazySegmentType<T>,
-                                                public SegmentTypeMin<T> {
- public:
-  static T base() { return SegmentTypeMin<T>::base(); }
-  static T combine(const T& left, const T& right) {
-    return SegmentTypeMin<T>::combine(left, right);
-  }
-  static T elaborate_lazy_children(T val) { return val; }
-  static T value_to_add(int start, const T& value,
-                        const LazySegmentTree<T, LazySegmentTypeMin<T>>* seg) {
-    return value;
-  }
-  static T combine_lazy(const T& prec, const T& update) {
-    const auto new_value = prec + update;
-    return combine(new_value, prec);
-  }
-};
-
-template<typename T> class LazySegmentTypeMax : public LazySegmentType<T>,
-                                                public SegmentTypeMax<T> {
- public:
-  static T base() { return SegmentTypeMax<T>::base(); }
-  static T combine(const T& left, const T& right) {
-    return SegmentTypeMax<T>::combine(left, right);
-  }
-  static T elaborate_lazy_children(T val) { return val; }
-  static T value_to_add(int start, const T& value,
-                        const LazySegmentTree<T, LazySegmentTypeMax<T>>* seg) {
-    return value;
-  }
-  static T combine_lazy(const T& prec, const T& update) {
-    const auto new_value = prec + update;
-    return combine(new_value, prec);
-  }
-};
-
-
-
-
-template<typename T, class TT>
-class LazySegmentTree : public SegmentTree<T, TT> {
- public:
-  explicit LazySegmentTree(int size);
-
-  typename std::enable_if<std::is_base_of<LazySegmentType<T>, TT>::value, void>::type
-  range_add(int pos1, int pos2, const T& value);
-
-  typename std::enable_if<std::is_base_of<LazySegmentType<T>, TT>::value, T>::type
-  range_query(int pos1, int pos2) override;
-
-  template<typename U, typename V> friend
-  std::ostream& print_all(std::ostream& os, const LazySegmentTree<U, V>& st);
 
  private:
-  T recursive_range_query(int start, int pos1, int pos2) override;
-  void recursive_range_add(int start, int pos1, int pos2, const T& value);
-  void apply_to_children(int start);
+  int _size;  // Size of the original array
+  std::vector<T> _segment_tree;  // real segment tree
+  std::vector<T> lazy;  // tree for lazy propagation
 
-  std::vector<T> lazy_tree_;
+  // Function for moving between nodes
+  int left(int i) {
+    return 2*i + 1;
+  }
+
+  int right(int i) {
+    return 2*i + 2;
+  }
+
+  int parent(int i) {
+    return (i - 1)/2;
+  }
+
+  // propagate the laziness of the node
+  void propagate_lazy(int p, int L, int R) {
+    if (lazy[p] == 0) return;
+    // Update this node
+    _segment_tree[p] += lazy[p];
+
+    // Propagate if it isnt a leaf
+    if (L != R) {
+      lazy[left(p)] += lazy[p];
+      lazy[right(p)] += lazy[p];
+    }
+
+    // Reset the actual node
+    lazy[p] = 0;
+  }
+
+  // Build the tree given initial vector
+  void build(int p, int L, int R, const std::vector<T>& initial) {
+    if (L == R) {  // It is a leaf
+      _segment_tree[p] = initial[L];
+    } else {
+      // Building children
+      build(left(p), L, (L + R) / 2,  initial);
+      build(right(p), (L + R) / 2 + 1, R,  initial);
+      _segment_tree[p] = std::min(_segment_tree[left(p)], _segment_tree[right(p)]);
+    }
+  }
+
+
+  // Update the range [i, j] with the associative operation
+  T recursive_range_add(int p, int L, int R, int i, int j, T v) {
+    propagate_lazy(p, L, R);
+
+    if (i > R || j < L) return _segment_tree[p];  // No intersection
+    if (L >= i && R <= j) {  // Contained
+      _segment_tree[p] +=  v;
+      if (L != R) {  // If it isnt a leaf
+        lazy[left(p)] += v;
+        lazy[right(p)] += v;
+      }
+      return _segment_tree[p];
+    }
+
+    // Updating this node
+    _segment_tree[p] = std::min(recursive_range_add(left(p), L, (L + R)/2, i, j, v),
+                 recursive_range_add(right(p), (L + R)/2 + 1, R, i, j, v));
+
+    return _segment_tree[p];
+  }
+
+  // Internal query, it has L and R as parametres
+  T recursive_range_query(int p, int L, int R, int i, int j) {
+    propagate_lazy(p, L, R);
+
+    if (i > R || j < L)  // No intersection
+      return LLONG_MAX;
+    if (i <= L && R <= j)  // Contained
+      return _segment_tree[p];
+
+    return std::min(recursive_range_query(left(p), L, (L + R)/2, i, j),
+                recursive_range_query(right(p), (L + R)/2 + 1, R, i, j));
+  }
+
 };
-
-
-template<typename T, class TT>
-LazySegmentTree<T, TT>::LazySegmentTree(int size) :
-  SegmentTree<T, TT>(size) {
-  lazy_tree_ = std::vector<T>(this->tree_.size());
-}
-
-template<typename T, class TT>
-typename std::enable_if<std::is_base_of<LazySegmentType<T>, TT>::value, void>::type
-LazySegmentTree<T, TT>::range_add(int pos1, int pos2, const T& value) {
-  recursive_range_add(1, pos1, pos2, value);
-}
-
-template<typename T, class TT>
-void LazySegmentTree<T, TT>::apply_to_children(int start) {
-  if (start >= this->tree_size_) {
-    return;
-  }
-  if (lazy_tree_[start]) {
-    const auto appo = lazy_tree_[start];
-    if ((start*2 + 1) < this->tree_size_) {
-      lazy_tree_[start*2] = TT::elaborate_lazy_children(appo);
-      lazy_tree_[start*2 + 1] = TT::elaborate_lazy_children(appo);
-    }
-    this->tree_[start] = this->tree_[start] + appo;
-    lazy_tree_[start] = 0;
-
-    auto parent = start/2;
-    while (parent) {
-      const auto other = (start % 2) ? start - 1 : start + 1;
-      this->tree_[parent] = TT::combine(this->tree_[start], this->tree_[other]);
-      parent /= 2;
-    }
-  }
-}
-
-template<typename T, class TT>
-void LazySegmentTree<T, TT>::recursive_range_add(int start, int pos1, int pos2, const T& value) {
-  if (start > this->tree_size_) {
-    return;
-  }
-  apply_to_children(start);
-  const auto attuale = this->range(start);
-  if (attuale.first >= pos1 && attuale.second <= pos2) {
-    const auto value_to_add = TT::value_to_add(start, value, this);
-    this->tree_[start] += value_to_add;
-    if (start*2 < this->tree_size_) {
-      lazy_tree_[start*2] = TT::elaborate_lazy_children(value_to_add);
-      lazy_tree_[start*2 + 1] = TT::elaborate_lazy_children(value_to_add);
-    }
-    auto parent = start/2;
-    while (parent) {
-      const auto other = (start % 2) ? start - 1 : start + 1;
-      this->tree_[parent] = TT::combine(this->tree_[start], this->tree_[other]);
-      parent /= 2;
-    }
-    return;
-  }
-  if (attuale.first > pos1 && attuale.second < pos2) {
-    return;
-  }
-  recursive_range_add(start*2, pos1, pos2, value);
-  recursive_range_add(start*2 + 1, pos1, pos2, value);
-  return;
-}
-
-template<typename T, class TT>
-typename std::enable_if<std::is_base_of<LazySegmentType<T>, TT>::value, T>::type
-LazySegmentTree<T, TT>::range_query(int pos1, int pos2) {
-  return recursive_range_query(1, pos1, pos2);
-}
-
-template<typename T, class TT>
-T LazySegmentTree<T, TT>::recursive_range_query(int start, int pos1, int pos2) {
-  if (start > this->tree_size_) {
-    return TT::base();
-  }
-  apply_to_children(start);
-  const auto attuale = this->range(start);
-  // std::cout << "debug range: (" << attuale.first << ", " <<
-  //   attuale.second << ")" << std::endl;
-  if (attuale.first >= pos1 && attuale.second <= pos2) {
-    return this->tree_[start];
-  }
-  if (attuale.first > pos1 && attuale.second < pos2) {
-    return TT::base();
-  }
-  return TT::combine(recursive_range_query(start*2, pos1, pos2),
-                    recursive_range_query(start*2 + 1, pos1, pos2));
-}
-
-
-
-template<typename T, class TT>
-std::ostream& print_all(std::ostream& os, const LazySegmentTree<T, TT>& st) {
-  os << "normal tree: " << std::endl;
-  for (const auto it: st.tree_) {
-    os << it << "\t";
-  }
-  os << std::endl << "lazy tree: " << std::endl;
-  for (const auto it: st.lazy_tree_) {
-    os << it << "\t";
-  }
-  return os;
-}
 
 
 #endif  // __LAZY_SEGMENT_TREE_H__

@@ -1,26 +1,44 @@
 
 
 #include <bits/stdc++.h>
+
 #include "LazySegmentTree.h"
 
+
+// This problem can be solved easily using a segment tree
+// with lazy propagation, that allows to make range updates
+// in O(log n) time.
+
+// if the requested range is circular (the second is smaller than
+// the first) we can simply split it in 2 intervals in the right order,
+// one from the beginning to the second, and the other from the first
+// to the end.
+
+// Time complexity: O(q log n)
+// Space complexity: O(n)
+
+
+
 using namespace std;
+using ll = long long;
+
+
 
 int main(int argc, char* argv[]) {
   int n = 0;
   cin >> n;
   using ll = long long int;
-  LazySegmentTree<ll, LazySegmentTypeMin<ll>> tree(n);
-
+  vector<ll> initial(n, 0);
   for (auto i = 0; i < n; i++) {
-    int appo;
-    cin >> appo;
-    tree.add(i + 1, appo);
+    cin >> initial[i];
   }
+  LazySegmentTree<ll> tree(initial);
+
+
   int q = 0;
   cin >> q;
-  vector<int> ans;
+  vector<ll> ans;
   ans.reserve(q);
-  // int cusumano = 0;
   for (int i = 0; i < q + 1; i++) {
     int a = 0, b = 0, c = 0;
     string appo;
@@ -31,26 +49,21 @@ int main(int argc, char* argv[]) {
     stringstream ss(appo);
     ss >> a >> b;
     if (ss >> c) {
-      a++; b++;
       if (b >= a) {
         tree.range_add(a, b, c);
       } else {
-        tree.range_add(1, b, c);
-        tree.range_add(a, n, c);
+        tree.range_add(0, b, c);
+        tree.range_add(a, n - 1, c);
       }
     } else {
-      a++; b++;
-      // cout << cusumano << endl;
-      // cusumano++;
       if (b >= a) {
         ans.push_back(tree.range_query(a, b));
       } else {
-        auto appo = std::min(tree.range_query(1, b), tree.range_query(a, n));
+        auto appo = std::min(tree.range_query(0, b),
+                             tree.range_query(a, n - 1));
         ans.push_back(appo);
       }
     }
-    // cout << "a: " << a << " b: " << b << " c: " << c << endl;
-    // print_all(cout, tree) << endl << endl << endl;
   }
   for (const auto& it: ans) {
     cout << it << "\n";
