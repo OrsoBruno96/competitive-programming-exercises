@@ -48,7 +48,7 @@
 ** Lecture 11
 ** Lecture 12
 *** DONE Powerful array
-*** TODO Tree and queries TLE
+*** DONE Tree and queries
 
 ** Lecture 13
 ** Lecture 14
